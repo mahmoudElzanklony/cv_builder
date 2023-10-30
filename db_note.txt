@@ -1,0 +1,6 @@
+questions replaced to fields
+
+templates_section take width from template_content
+
+users_cv_sections take width from users_cv_sections_content
+
