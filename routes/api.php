@@ -11,6 +11,7 @@ use App\Http\Controllers\TemplatesController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\SectionsController;
+use App\Http\Controllers\AttributesController;
 use App\Http\Controllers\classes\general\GeneralServiceController;
 
 Route::get('/user',[AuthControllerApi::class,'user'])->middleware('CheckApiAuth');
@@ -37,6 +38,9 @@ Route::group(['middleware'=>'changeLang'],function (){
     Route::group(['prefix'=>'/sections'],function(){
         Route::get('/',[SectionsController::class,'index']);
     });
+    Route::group(['prefix'=>'/attributes'],function(){
+        Route::get('/',[AttributesController::class,'all_attributes']);
+    });
 
     Route::group(['prefix'=>'/categories'],function(){
         Route::get('/',[CategoriesController::class,'index']);
@@ -48,6 +52,7 @@ Route::group(['middleware'=>'changeLang'],function (){
         Route::post('/users',[DashboardController::class,'users']);
         Route::post('/templates/save',[DashboardController::class,'save_template']);
         Route::post('/sections/save',[DashboardController::class,'save_section']);
+        Route::post('/attributes/save',[DashboardController::class,'save_attribute']);
         Route::post('/categories/save',[CategoriesController::class,'save']);
 
 

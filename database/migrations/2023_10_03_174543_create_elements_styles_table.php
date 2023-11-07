@@ -15,8 +15,8 @@ class CreateElementsStylesTable extends Migration
     {
         Schema::create('elements_styles', function (Blueprint $table) {
             $table->id();
-            $table->string('imageable_id')->nullable();
-            $table->string('imageable_type')->nullable();
+            $table->string('styleable_id')->nullable();
+            $table->string('styleable_type')->nullable();
             $table->string('style');
             $table->timestamps();
         });

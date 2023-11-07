@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\traits\Sections;
+use App\Http\traits\SectionsHelper;
 use Illuminate\Http\Request;
 
 class SectionsController extends Controller
 {
     //
     public function index(){
-        return Sections::all_sections();
+        return SectionsHelper::all_sections();
     }
 }

@@ -15,9 +15,11 @@ class CreateTemplatesTable extends Migration
     {
         Schema::create('templates', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('category_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->string('ar_name');
-            $table->string('en_name');
+            $table->string('name');
+            $table->string('visibility')->default('public');
+            $table->char('type'); // u ==> user , s ==> service
             $table->softDeletes();
             $table->timestamps();
         });

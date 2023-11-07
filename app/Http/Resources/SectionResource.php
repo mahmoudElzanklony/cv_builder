@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Services\FormRequestHandleInputs;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class SectionResource extends JsonResource
@@ -16,8 +17,8 @@ class SectionResource extends JsonResource
     {
         return [
           'id'=>$this->id,
-          'name'=>$this->{app()->getLocale().'_name'},
-          'info'=>$this->{app()->getLocale().'_info'},
+          'name'=>FormRequestHandleInputs::handle_output_column($this->name),
+          'info'=>FormRequestHandleInputs::handle_output_column($this->info),
           'created_at'=>$this->created_at->format('Y h d,h:i A'),
         ];
     }

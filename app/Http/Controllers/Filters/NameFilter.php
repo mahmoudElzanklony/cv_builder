@@ -14,6 +14,6 @@ class NameFilter extends FilterRequest
         }
 
         return $next($request)
-            ->whereRaw('(ar_name LIKE "%'.request()->input('name').'%" OR en_name LIKE "%'.request()->input('name').'%")');
+            ->whereRaw('(name LIKE "%'.request()->input('name').'%")');
     }
 }

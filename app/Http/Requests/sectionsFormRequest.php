@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Services\FormRequestHandleInputs;
+use App\Models\languages;
 use Illuminate\Foundation\Http\FormRequest;
 
 class sectionsFormRequest extends FormRequest
@@ -23,15 +25,14 @@ class sectionsFormRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $arr = [
             'id'=>'filled',
-            'ar_name'=>'required',
-            'en_name'=>'required',
-            'ar_info'=>'required',
-            'en_info'=>'required',
             'attributes'=>'filled|array',
             'attributes.*'=>'filled|exists:attributes,id',
         ];
+        $arr = FormRequestHandleInputs::handle($arr,['name','info']);
+        return $arr;
+
     }
 
 

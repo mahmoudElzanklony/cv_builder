@@ -16,10 +16,9 @@ class CreateAttributesTable extends Migration
         Schema::create('attributes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->string('ar_name');
-            $table->string('en_name');
-            $table->string('ar_placeholder');
-            $table->string('en_placeholder');
+            $table->string('name'); // in only at english
+            $table->text('label');
+            $table->text('placeholder');
             $table->string('type'); // date , email , text
             $table->softDeletes();
             $table->timestamps();

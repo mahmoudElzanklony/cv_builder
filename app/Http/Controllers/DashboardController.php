@@ -14,12 +14,12 @@ use App\Models\countries;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
-use App\Http\traits\Templates;
-use App\Http\traits\Sections;
+use App\Http\traits\TemplatesHelper;
+use App\Http\traits\SectionsHelper;
+use App\Http\traits\AttributesHelper;
 class DashboardController extends Controller
 {
-    use Templates;
-    use Sections;
+    use TemplatesHelper , SectionsHelper , AttributesHelper;
 
     public function users(){
         $data = User::query()->with('country')->orderBy('id','DESC');
