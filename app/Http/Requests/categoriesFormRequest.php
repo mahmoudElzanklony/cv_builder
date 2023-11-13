@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Services\FormRequestHandleInputs;
 use Illuminate\Foundation\Http\FormRequest;
 
 class categoriesFormRequest extends FormRequest
@@ -11,6 +12,7 @@ class categoriesFormRequest extends FormRequest
      *
      * @return bool
      */
+    private $arr;
     public function authorize()
     {
         return true;
@@ -23,18 +25,15 @@ class categoriesFormRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $this->arr =  [
             'id'=>'filled',
-            'ar_name'=>'required',
-            'en_name'=>'required',
         ];
+        $this->arr = FormRequestHandleInputs::handle($this->arr,['name']);
+        return $this->arr;
     }
 
     public function attributes()
     {
-        return [
-          'ar_name'=>trans('keywords.ar_name'),
-          'en_name'=>trans('keywords.en_name'),
-        ];
+        return FormRequestHandleInputs::attributes_messages($this->arr);
     }
 }

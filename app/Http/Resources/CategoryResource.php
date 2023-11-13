@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Services\FormRequestHandleInputs;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class CategoryResource extends JsonResource
@@ -16,7 +17,7 @@ class CategoryResource extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'name'=>$this->{app()->getLocale().'_name'},
+            'name'=>FormRequestHandleInputs::handle_output_column($this->name),
             'created_at'=>$this->created_at->format('Y h d,h:i A'),
         ];
     }

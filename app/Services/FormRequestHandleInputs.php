@@ -20,6 +20,15 @@ class FormRequestHandleInputs
         return $all;
     }
 
+    public static function attributes_messages($arr){
+        $data = array_keys($arr);
+        $output = [];
+        foreach($data as $datum){
+            $output[$datum] = trans('keywords.'.$datum);
+        }
+        return $output;
+    }
+
     public static function handle_inputs_langs($all,$decoded){
         $langs = languages::query()->select('prefix')->get()->map(function ($e){
             return $e->prefix;

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Services\FormRequestHandleInputs;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class TemplateResource extends JsonResource
@@ -17,7 +18,9 @@ class TemplateResource extends JsonResource
         return [
           'id'=>$this->id,
           'category'=>CategoryResource::make($this->whenLoaded('category')),
-          'name'=>$this->{app()->getLocale().'_name'},
+          'name'=>FormRequestHandleInputs::handle_output_column($this->name),
+          'type'=>$this->type,
+          'visibility'=>$this->visibility,
           'created_at'=>$this->created_at->format('Y h d,h:i A'),
 
         ];

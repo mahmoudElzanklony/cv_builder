@@ -32,6 +32,9 @@ return [
 
     // ----------------------start of templates - ---------------------
     'category'=>'Category',
+    'category_id'=>'Category',
+    'type'=>'Type',
+    'visibility'=>'Visibility'
     // ----------------------end of templates - ---------------------
 
 

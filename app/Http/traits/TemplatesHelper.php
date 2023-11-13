@@ -8,6 +8,7 @@ use App\Http\Actions\ImageModalSave;
 use App\Http\Controllers\Filters\NameFilter;
 use App\Http\Requests\templatesFormRequest;
 use App\Http\Resources\TemplateResource;
+use App\Services\FormRequestHandleInputs;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Facades\DB;
 trait TemplatesHelper
@@ -28,6 +29,7 @@ trait TemplatesHelper
     public function save_template(templatesFormRequest $request){
         $data = $request->validated();
         $data['user_id'] = auth()->id();
+        $data =  FormRequestHandleInputs::handle_inputs_langs($data,['name']);
         DB::beginTransaction();
         $template = \App\Models\templates::query()->updateOrCreate([
             'id'=>$data['id'] ?? null
