@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class attributes_selections extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['attribute_id','model'];
 }

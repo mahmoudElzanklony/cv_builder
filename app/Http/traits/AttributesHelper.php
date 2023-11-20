@@ -8,6 +8,7 @@ use App\Http\Controllers\Filters\LabelFilter;
 use App\Http\Requests\AttributeFormRequest;
 use App\Http\Resources\AttributeResource;
 use App\Models\attributes;
+use App\Models\attributes_selections;
 use App\Services\FormRequestHandleInputs;
 use App\Http\Actions\ImageModalSave;
 use App\Http\Controllers\Filters\NameFilter;
@@ -42,9 +43,21 @@ trait AttributesHelper
         $output = \App\Models\attributes::query()->updateOrCreate([
             'id'=>$data['id'] ?? null
         ],$data);
+        // if this attr multi selections
+        if(request()->filled('table')){
+            $this->save_attr_selections($output->id,request('table'));
+        }
 
 
         DB::commit();
         return messages::success_output(trans('messages.saved_successfully'),AttributeResource::make($output));
+    }
+
+    public function save_attr_selections($attr_id,$table){
+        attributes_selections::query()->updateOrCreate([
+            'attribute_id'=>$attr_id
+        ],[
+            'model'=>'App\\Models\\'.$table
+        ]);
     }
 }

@@ -28,6 +28,7 @@ class AttributeFormRequest extends FormRequest
             'id'=>'filled',
             'name'=>'required',
             'type'=>'required',
+            'table'=>'filled',
         ];
         $arr = FormRequestHandleInputs::handle($arr,['label','placeholder']);
         return $arr;

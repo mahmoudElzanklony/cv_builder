@@ -19,6 +19,7 @@ class CreateTemplateSecAttrValueTable extends Migration
             $table->foreignId('attribute_id')->nullable(); // i make it this because in some case you want to add image in specific section so there is no attribute_id
             // and no answer and i will add image using elements_style
             $table->text('answer');
+            $table->string('answer_type'); // text , selections
             $table->string('content_width');
             $table->timestamps();
         });
