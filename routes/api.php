@@ -12,6 +12,8 @@ use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\SectionsController;
 use App\Http\Controllers\AttributesController;
+use App\Http\Controllers\TemplateSecAttrValueController;
+use App\Http\Controllers\UsersCvsController;
 use App\Http\Controllers\classes\general\GeneralServiceController;
 
 Route::get('/user',[AuthControllerApi::class,'user'])->middleware('CheckApiAuth');
@@ -45,15 +47,35 @@ Route::group(['middleware'=>'changeLang'],function (){
     Route::group(['prefix'=>'/categories'],function(){
         Route::get('/',[CategoriesController::class,'index']);
     });
+    Route::group(['prefix'=>'/template-sec-attr-value'],function(){
+        Route::get('/',[TemplateSecAttrValueController::class,'all_template_sec_attr_data']);
+        Route::post('search-attribute-values',[TemplateSecAttrValueController::class,'search_attribute_values']);
+    });
+    Route::group(['prefix'=>'/users-cvs','middleware'=>'CheckApiAuth'],function(){
+        Route::get('/',[UsersCvsController::class,'index']);
+        Route::post('save',[UsersCvsController::class,'save']);
+    });
 
 
 
     Route::group(['prefix'=>'/dashboard','middleware'=>'CheckApiAuth'],function(){
         Route::post('/users',[DashboardController::class,'users']);
         Route::post('/templates/save',[DashboardController::class,'save_template']);
+        Route::post('/templates-sections/save',[DashboardController::class,'save_template_sections']);
         Route::post('/sections/save',[DashboardController::class,'save_section']);
         Route::post('/attributes/save',[DashboardController::class,'save_attribute']);
         Route::post('/categories/save',[CategoriesController::class,'save']);
+        Route::group(['prefix'=>'/languages'],function(){
+            Route::get('/',[DashboardController::class,'all_languages']);
+            Route::post('/save',[DashboardController::class,'save_lang']);
+        });
+        Route::group(['prefix'=>'/tables-privileges'],function(){
+            Route::get('/',[DashboardController::class,'tables_privileges']);
+            Route::post('/save',[DashboardController::class,'save_table_privilege']);
+        });
+        Route::group(['prefix'=>'/template-sec-attr-value'],function(){
+            Route::post('/save',[DashboardController::class,'save_template_sec_attr_value']);
+        });
 
 
         Route::group(['prefix'=>'/countries'],function(){

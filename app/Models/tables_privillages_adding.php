@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class tables_privillages_adding extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['name'];
 }

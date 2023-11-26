@@ -9,5 +9,5 @@ class templates_sections extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['template_id','section_id'];
+    protected $fillable = ['template_id','section_id','content_width'];
 }

@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class languages extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['prefix','name'];
 }

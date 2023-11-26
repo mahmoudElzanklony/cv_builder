@@ -21,7 +21,8 @@ class AttributeResource extends JsonResource
             'label'=>FormRequestHandleInputs::handle_output_column($this->label),
             'placeholder'=>FormRequestHandleInputs::handle_output_column($this->placeholder),
             'type'=>$this->type,
-            'created_at'=>$this->created_at->format('Y h d,h:i A'),
+            'selections'=>$this->type == 'selections' ? AttributeSelectionResource::make($this->selections):[],
+            'created_at'=>$this->created_at,
         ];
     }
 }

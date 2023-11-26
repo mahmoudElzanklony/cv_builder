@@ -17,9 +17,12 @@ use Illuminate\Pipeline\Pipeline;
 use App\Http\traits\TemplatesHelper;
 use App\Http\traits\SectionsHelper;
 use App\Http\traits\AttributesHelper;
+use App\Http\traits\dashboard\LanguagesHelper;
+use App\Http\traits\dashboard\TablesPrivilegesHelper;
+use App\Http\traits\TemplateSecAttrValueHelper;
 class DashboardController extends Controller
 {
-    use TemplatesHelper , SectionsHelper , AttributesHelper;
+    use TemplatesHelper , SectionsHelper , AttributesHelper , LanguagesHelper , TablesPrivilegesHelper , TemplateSecAttrValueHelper;
 
     public function users(){
         $data = User::query()->with('country')->orderBy('id','DESC');
