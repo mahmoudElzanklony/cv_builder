@@ -4,6 +4,9 @@
 namespace App\Http\traits;
 
 
+use App\Http\Resources\TemplateSectionResource;
+use App\Models\sections;
+use App\Models\templates_sections;
 use App\Services\FormRequestHandleInputs;
 use App\Http\Actions\ImageModalSave;
 use App\Http\Controllers\Filters\NameFilter;
@@ -27,6 +30,15 @@ trait SectionsHelper
             ->thenReturn()
             ->paginate(10);
         return SectionResource::collection($output);
+    }
+
+    public static function per_template($template_id){
+        $data = templates_sections::query()
+            ->with(['section.attributes'])
+            ->where('template_id','=',$template_id)
+            ->orderBy('id','DESC')
+            ->get();
+        return TemplateSectionResource::collection($data);
     }
 
     public function save_section(sectionsFormRequest $request){

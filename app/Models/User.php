@@ -38,17 +38,12 @@ class User extends Authenticatable implements JWTSubject
         'username',
         'email',
         'password',
-        'serial_number',
         'phone',
-        'whatapp_phone',
         'address',
         'image',
-        'contact_email_status',
         'block',
-        'auto_publish',
         'role_id',
         'country_id',
-        'total_points',
 
 
     ];

@@ -10,8 +10,12 @@ use App\Http\Controllers\Filters\UsernameFilter;
 use App\Http\Requests\countriesFormRequest;
 use App\Http\Resources\UserResource;
 use App\Http\traits\messages;
+use App\Models\attributes;
 use App\Models\countries;
+use App\Models\sections;
+use App\Models\templates;
 use App\Models\User;
+use App\Models\users_cvs;
 use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
 use App\Http\traits\TemplatesHelper;
@@ -61,5 +65,15 @@ class DashboardController extends Controller
 
         return messages::success_output(trans('messages.saved_successfully'),$output);
 
+    }
+
+    public function quick_statistics(){
+        $output = [
+          'templates'=>templates::query()->count(),
+          'sections'=>sections::query()->count(),
+          'attributes'=>attributes::query()->count(),
+          'users_cv'=>users_cvs::query()->count(),
+        ];
+        return messages::success_output('',$output);
     }
 }

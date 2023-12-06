@@ -11,4 +11,8 @@ class SectionsController extends Controller
     public function index(){
         return SectionsHelper::all_sections();
     }
+
+    public function per_template(){
+        return SectionsHelper::per_template(request('template_id'));
+    }
 }

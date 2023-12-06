@@ -37,9 +37,7 @@ Route::group(['middleware'=>'changeLang'],function (){
         Route::get('/',[TemplatesController::class,'all_templates']);
     });
 
-    Route::group(['prefix'=>'/sections'],function(){
-        Route::get('/',[SectionsController::class,'index']);
-    });
+
     Route::group(['prefix'=>'/attributes'],function(){
         Route::get('/',[AttributesController::class,'all_attributes']);
     });
@@ -54,12 +52,20 @@ Route::group(['middleware'=>'changeLang'],function (){
     Route::group(['prefix'=>'/users-cvs','middleware'=>'CheckApiAuth'],function(){
         Route::get('/',[UsersCvsController::class,'index']);
         Route::post('save',[UsersCvsController::class,'save']);
+        Route::post('save-section',[UsersCvsController::class,'save_section']);
+        Route::post('save-attr-val',[UsersCvsController::class,'save_attr_val']);
+    });
+    Route::group(['prefix'=>'/sections','middleware'=>'CheckApiAuth'],function(){
+        Route::get('/',[SectionsController::class,'index']);
+        Route::post('save',[UsersCvsController::class,'save']);
+        Route::get('/per-template',[SectionsController::class,'per_template']);
     });
 
 
 
     Route::group(['prefix'=>'/dashboard','middleware'=>'CheckApiAuth'],function(){
         Route::post('/users',[DashboardController::class,'users']);
+        Route::get('/quick-statistics',[DashboardController::class,'quick_statistics']);
         Route::post('/templates/save',[DashboardController::class,'save_template']);
         Route::post('/templates-sections/save',[DashboardController::class,'save_template_sections']);
         Route::post('/sections/save',[DashboardController::class,'save_section']);

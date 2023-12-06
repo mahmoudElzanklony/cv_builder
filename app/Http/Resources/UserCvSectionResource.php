@@ -2,10 +2,9 @@
 
 namespace App\Http\Resources;
 
-use App\Services\FormRequestHandleInputs;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SectionResource extends JsonResource
+class UserCvSectionResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,9 +16,8 @@ class SectionResource extends JsonResource
     {
         return [
           'id'=>$this->id,
-          'name'=>FormRequestHandleInputs::handle_output_column($this->name),
-          'info'=>FormRequestHandleInputs::handle_output_column($this->info),
-          'attributes'=>AttributeResource::collection($this->whenLoaded('attributes')),
+          'user_cv'=>UserCvResource::make($this->whenLoaded('user_cv')),
+          'section'=>SectionResource::make($this->whenLoaded('section')),
           'created_at'=>$this->created_at->format('Y h d,h:i A'),
         ];
     }
