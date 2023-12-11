@@ -18,6 +18,7 @@ class AttributeResource extends JsonResource
         return [
             'id'=>$this->id,
             'user_id'=>$this->user_id,
+            'name'=>$this->name,
             'label'=>FormRequestHandleInputs::handle_output_column($this->label),
             'placeholder'=>FormRequestHandleInputs::handle_output_column($this->placeholder),
             'type'=>$this->type,

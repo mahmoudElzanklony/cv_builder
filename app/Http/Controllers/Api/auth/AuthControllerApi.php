@@ -32,6 +32,7 @@ class AuthControllerApi extends AuthServicesClass
                 $user = auth('api')->user();
                 $user['token'] =  $token;
                 $user['role'] = roles::query()->find($user->role_id);
+                return $user;
                 return [
                     'user'=>$user,
                     'token'=>$token

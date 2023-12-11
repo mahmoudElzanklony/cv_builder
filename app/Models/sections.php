@@ -15,4 +15,8 @@ class sections extends Model
     public function attributes(){
         return $this->belongsToMany(attributes::class,sections_attributes::class,'section_id','attribute_id');
     }
+
+    public function image(){
+        return $this->morphOne(images::class,'imageable');
+    }
 }

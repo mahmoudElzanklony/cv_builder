@@ -14,15 +14,17 @@ use App\Http\Controllers\SectionsController;
 use App\Http\Controllers\AttributesController;
 use App\Http\Controllers\TemplateSecAttrValueController;
 use App\Http\Controllers\UsersCvsController;
+use App\Http\Controllers\TitleDescriptionController;
 use App\Http\Controllers\classes\general\GeneralServiceController;
 
 Route::get('/user',[AuthControllerApi::class,'user'])->middleware('CheckApiAuth');
-Route::post('/login',[AuthControllerApi::class,'login_api']);
+
 
 Route::group(['middleware'=>'changeLang'],function (){
     Route::post('/register',[AuthControllerApi::class,'register_post']);
     Route::post('/logout',[AuthControllerApi::class,'logout_api']);
     Route::post('/validate-user',[AuthControllerApi::class,'validate_user']);
+    Route::post('/login',[AuthControllerApi::class,'login_api']);
 
 
     Route::group(['middleware'=>'guest'],function () {
@@ -57,8 +59,10 @@ Route::group(['middleware'=>'changeLang'],function (){
     });
     Route::group(['prefix'=>'/sections','middleware'=>'CheckApiAuth'],function(){
         Route::get('/',[SectionsController::class,'index']);
+        Route::get('/names',[SectionsController::class,'names']);
         Route::post('save',[UsersCvsController::class,'save']);
         Route::get('/per-template',[SectionsController::class,'per_template']);
+       // Route::get('/{name}',[SectionsController::class,'specific_section']);
     });
 
 
@@ -92,6 +96,10 @@ Route::group(['middleware'=>'changeLang'],function (){
 
     Route::group(['prefix'=>'/users','middleware'=>'CheckApiAuth'],function(){
         Route::post('/save',[UsersController::class,'save']);
+    });
+
+    Route::group(['prefix'=>'/titledesc'],function(){
+        Route::post('/',[TitleDescriptionController::class,'all']);
     });
 
 

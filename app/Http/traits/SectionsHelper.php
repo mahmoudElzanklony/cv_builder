@@ -4,6 +4,7 @@
 namespace App\Http\traits;
 
 
+use App\Http\Actions\SectionsWithAllData;
 use App\Http\Resources\TemplateSectionResource;
 use App\Models\sections;
 use App\Models\templates_sections;
@@ -21,7 +22,7 @@ trait SectionsHelper
 {
     use upload_image;
     public static function all_sections(){
-        $sections = \App\Models\sections::query()->with('attributes')->orderBy('id','DESC');
+        $sections = SectionsWithAllData::get_data();
         $output = app(Pipeline::class)
             ->send($sections)
             ->through([
@@ -30,6 +31,20 @@ trait SectionsHelper
             ->thenReturn()
             ->paginate(10);
         return SectionResource::collection($output);
+    }
+
+    public static function specific_section($name){
+        $output =  $sections = \App\Models\sections::query()
+            ->when($name != "first",function($e) use ($name){
+                $e->where('id','=',$name);
+            })
+            ->with(['attributes','image'])
+            ->first();
+        return SectionResource::make($output);
+    }
+
+    public static function names(){
+        $sections = SectionsWithAllData::get_data();
     }
 
     public static function per_template($template_id){

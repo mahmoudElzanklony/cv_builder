@@ -12,7 +12,15 @@ class SectionsController extends Controller
         return SectionsHelper::all_sections();
     }
 
+    public function specific_section(){
+        return SectionsHelper::specific_section(request('name'));
+    }
+
     public function per_template(){
         return SectionsHelper::per_template(request('template_id'));
+    }
+
+    public function names(){
+
     }
 }
