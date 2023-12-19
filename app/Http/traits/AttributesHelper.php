@@ -37,7 +37,7 @@ trait AttributesHelper
     public function save_attribute(AttributeFormRequest $request){
         $data = $request->validated();
         $data['user_id'] = auth()->id();
-        $data =  FormRequestHandleInputs::handle_inputs_langs($data,['label','placeholder']);
+        $data =  FormRequestHandleInputs::handle_inputs_langs($data,['label','placeholder','before_answer']);
 
         DB::beginTransaction();
         $output = \App\Models\attributes::query()->updateOrCreate([

@@ -9,7 +9,7 @@ class attributes extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id','name','label','placeholder','type'];
+    protected $fillable = ['user_id','name','label','placeholder','before_answer','type'];
 
     public function selections(){
         return $this->hasOne(attributes_selections::class,'attribute_id');

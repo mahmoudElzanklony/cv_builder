@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\usersFormRequest;
 use App\Http\traits\messages;
 use App\Models\roles;
+use App\Models\User;
 use App\Services\auth\register_service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -20,7 +21,6 @@ class AuthControllerApi extends AuthServicesClass
             'email'=>'required',
             'password'=>'required',
         ]);
-
         if(sizeof($data->errors()) == 0) {
 
             $credential = request()->only(['email', 'password']);
@@ -77,8 +77,8 @@ class AuthControllerApi extends AuthServicesClass
     }
 
     public function user(){
-        $user = auth()->user();
-        $user['role'] = roles::query()->find($user->role_id);
-        return $user;
+        //$user = User::query()->find()
+        //$user['role'] = roles::query()->find($user->role_id);
+        return JWTAuth::parseToken()->authenticate();
     }
 }

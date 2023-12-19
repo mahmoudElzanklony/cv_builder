@@ -27,6 +27,7 @@ class AttributeFormRequest extends FormRequest
         $arr = [
             'id'=>'filled',
             'name'=>'required',
+            'before_answer'=>'nullable',
             'type'=>'required',
             'table'=>'filled',
         ];
