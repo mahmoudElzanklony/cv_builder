@@ -17,7 +17,13 @@ use App\Http\Controllers\UsersCvsController;
 use App\Http\Controllers\TitleDescriptionController;
 use App\Http\Controllers\classes\general\GeneralServiceController;
 
-
+Route::get('/test',function (){
+   /*$user = \App\Models\User::query()->find(1);
+   $user->username = 'hamza';
+   $user->email = 'al22222i@yahoo.com';
+   return $user;*/
+ //  return response()->json($user);
+});
 
 Route::group(['middleware'=>'changeLang'],function (){
     Route::post('/register',[AuthControllerApi::class,'register_post']);

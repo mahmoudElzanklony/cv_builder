@@ -17,6 +17,7 @@ class AuthControllerApi extends AuthServicesClass
 {
     use messages;
     public function login_api(){
+
         $data = Validator::make(request()->all(),[
             'email'=>'required',
             'password'=>'required',

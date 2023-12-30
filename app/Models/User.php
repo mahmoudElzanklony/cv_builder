@@ -34,6 +34,16 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+     public function getUsernameAttribute($val)
+     {
+         return ucfirst($val).' ... 11';
+     }
+
+    public function setUsernameAttribute($value)
+    {
+        $this->attributes['username'] = ucfirst($value);
+    }
+
     protected $fillable = [
         'username',
         'email',
