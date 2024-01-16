@@ -14,4 +14,9 @@ class attributes extends Model
     public function selections(){
         return $this->hasOne(attributes_selections::class,'attribute_id');
     }
+
+    public function image()
+    {
+        return $this->morphOne(images::class,'imageable');
+    }
 }

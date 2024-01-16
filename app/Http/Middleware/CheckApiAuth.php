@@ -24,8 +24,9 @@ class CheckApiAuth extends BaseMiddleware
             $request->headers->set('Authorization','Bearer '.$token,true);
             $user = $this->auth->parseToken()->authenticate($request);
         }else{
-            $token = JWTAuth::parseToken()->authenticate();
-            $user = $token;
+            $request->headers->set('Authorization','Bearer '.$request->header('Authorization'),true);
+            $token = $request->header('Authorization');
+            $user = $this->auth->parseToken()->authenticate($request);
         }
         try {
 

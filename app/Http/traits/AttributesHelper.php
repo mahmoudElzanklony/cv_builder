@@ -9,6 +9,7 @@ use App\Http\Requests\AttributeFormRequest;
 use App\Http\Resources\AttributeResource;
 use App\Models\attributes;
 use App\Models\attributes_selections;
+use App\Models\images;
 use App\Services\FormRequestHandleInputs;
 use App\Http\Actions\ImageModalSave;
 use App\Http\Controllers\Filters\NameFilter;
@@ -23,7 +24,7 @@ trait AttributesHelper
 {
     use upload_image;
     public static function all_attributes(){
-        $sections = attributes::query()->orderBy('id','DESC');
+        $sections = attributes::query()->with('image')->orderBy('id','DESC');
         $output = app(Pipeline::class)
             ->send($sections)
             ->through([
@@ -46,6 +47,13 @@ trait AttributesHelper
         // if this attr multi selections
         if(request()->filled('table')){
             $this->save_attr_selections($output->id,request('table'));
+        }
+        // apply image icon for this attribute
+        if(request()->has('image')){
+            images::query()
+                ->where('imageable_id','=',$output->id)
+                ->where('imageable_type','=','App\Models\attributes')->delete();
+            ImageModalSave::make($output->id,'attributes',request('image'));
         }
 
 

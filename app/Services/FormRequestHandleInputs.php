@@ -56,8 +56,12 @@ class FormRequestHandleInputs
 
     public static function handle_output_column($value){
         if($value != '') {
-            $value = json_decode($value, true);
-            return $value[app()->getLocale()];
+            try{
+                $value = json_decode($value, true);
+                return $value[app()->getLocale()];
+            }catch (\Exception $e){
+                return '';
+            }
         }
         return '';
     }

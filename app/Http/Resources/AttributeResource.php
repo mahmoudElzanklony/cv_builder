@@ -23,6 +23,7 @@ class AttributeResource extends JsonResource
             'placeholder'=>FormRequestHandleInputs::handle_output_column($this->placeholder),
             'before_answer'=>FormRequestHandleInputs::handle_output_column($this->before_answer),
             'type'=>$this->type,
+            'image'=>ImageResource::make($this->whenLoaded('image')),
             'selections'=>$this->type == 'selections' ? AttributeSelectionResource::make($this->selections):[],
             'created_at'=>$this->created_at,
         ];

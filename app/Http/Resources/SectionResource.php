@@ -19,9 +19,9 @@ class SectionResource extends JsonResource
           'id'=>$this->id,
           'name'=>FormRequestHandleInputs::handle_output_column($this->name),
           'info'=>FormRequestHandleInputs::handle_output_column($this->info),
-          'image'=>ImageResource::make($this->whenLoaded('image')),
+          'image'=>ImageResource::make($this->whenLoaded('image')) ,
           'attributes'=>AttributeResource::collection($this->whenLoaded('attributes')),
-          'created_at'=>$this->created_at->format('Y h d,h:i A'),
+          'created_at'=>$this->created_at->format('Y h d,h:i A') ?? null,
         ];
     }
 }
