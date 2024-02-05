@@ -15,6 +15,7 @@ use App\Http\Controllers\AttributesController;
 use App\Http\Controllers\TemplateSecAttrValueController;
 use App\Http\Controllers\UsersCvsController;
 use App\Http\Controllers\TitleDescriptionController;
+use App\Http\Controllers\PercentageController;
 use App\Http\Controllers\classes\general\GeneralServiceController;
 
 Route::get('/test',function (){
@@ -25,11 +26,12 @@ Route::get('/test',function (){
  //  return response()->json($user);
 });
 
-Route::group(['middleware'=>'changeLang'],function (){
+Route::group(['middleware'=>['changeLang','throttle:apiLimit']],function (){
     Route::post('/register',[AuthControllerApi::class,'register_post']);
     Route::post('/logout',[AuthControllerApi::class,'logout_api']);
     Route::post('/validate-user',[AuthControllerApi::class,'validate_user']);
     Route::post('/login',[AuthControllerApi::class,'login_api']);
+    Route::post('/percentages',[PercentageController::class,'index']);
     Route::get('/user',[AuthControllerApi::class,'user'])->middleware('CheckApiAuth');
 
 

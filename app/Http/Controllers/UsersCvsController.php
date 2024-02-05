@@ -6,6 +6,7 @@ use App\Http\Controllers\Filters\AttributeId;
 use App\Http\Controllers\Filters\TemplateId;
 use App\Http\Controllers\Filters\TemplateSectionId;
 use App\Http\Controllers\Filters\UserId;
+use App\Http\design_patterns\builders\CvLayoutBuilder;
 use App\Http\Requests\cvSectionFormRequest;
 use App\Http\Requests\userCvSecAttrValFormRequest;
 use App\Http\Resources\UserCvResource;
@@ -17,9 +18,10 @@ use App\Models\users_cvs_sec_attr_value;
 use App\Models\users_cvs_sections;
 use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
-
+use App\Http\traits\upload_image;
 class UsersCvsController extends Controller
 {
+    use upload_image;
     //
     public function index(){
         $data = users_cvs::query()->with(['user','template'])->orderBy('id','DESC');
@@ -35,14 +37,21 @@ class UsersCvsController extends Controller
     }
 
     public function save(){
-        $output = users_cvs::query()->updateOrCreate([
+        /*$output = users_cvs::query()->updateOrCreate([
             'id'=>request('id') ?? null
         ],[
             'user_id'=>auth()->id(),
             'template_id'=>request('template_id')
         ]);
-        $output = users_cvs::query()->orderBy('id','DESC')->with(['user','template'])->find($output->id);
-        return UserCvResource::make($output);
+        $output = users_cvs::query()->orderBy('id','DESC')->with(['user','template'])->find($output->id);*/
+        if(request()->hasFile('layout_image')){
+           // $img = $this->upload(request()->file('layout_image'),'layouts');
+        }
+
+        $cvObj = new CvLayoutBuilder(request('id') ?? null , request()->all());
+        return $cvObj->save_template()->save_template_sec()->save_template_style();
+        return request()->all();
+
     }
 
     public function save_section(cvSectionFormRequest $request){

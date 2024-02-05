@@ -17,7 +17,6 @@ class changeLang
      */
     public function handle(Request $request, Closure $next)
     {
-
         if(request()->hasHeader('lang')){
             app()->setLocale(request()->header('lang'));
         }else if(session()->has('lang')) {
