@@ -14,4 +14,9 @@ class templates_sections extends Model
     public function section(){
         return $this->belongsTo(sections::class,'section_id');
     }
+
+    public function attr_answers()
+    {
+        return $this->hasMany(template_sec_attr_value::class,'template_section_id');
+    }
 }

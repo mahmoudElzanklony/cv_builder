@@ -16,15 +16,10 @@ use App\Http\Controllers\TemplateSecAttrValueController;
 use App\Http\Controllers\UsersCvsController;
 use App\Http\Controllers\TitleDescriptionController;
 use App\Http\Controllers\PercentageController;
+use App\Http\Controllers\ImagesController;
+use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\classes\general\GeneralServiceController;
 
-Route::get('/test',function (){
-   /*$user = \App\Models\User::query()->find(1);
-   $user->username = 'hamza';
-   $user->email = 'al22222i@yahoo.com';
-   return $user;*/
- //  return response()->json($user);
-});
 
 Route::group(['middleware'=>['changeLang','throttle:apiLimit']],function (){
     Route::post('/register',[AuthControllerApi::class,'register_post']);
@@ -44,7 +39,10 @@ Route::group(['middleware'=>['changeLang','throttle:apiLimit']],function (){
     });
 
     Route::group(['prefix'=>'/templates'],function(){
-        Route::get('/',[TemplatesController::class,'all_templates']);
+        Route::post('/',[TemplatesController::class,'all_templates']);
+        Route::post('/check-payment/{id}',[TemplatesController::class,'check_payment'])->middleware('CheckApiAuth');
+        Route::get('/all-info/{id}',[TemplatesController::class,'all_info']);
+        Route::get('/style/{id}',[TemplatesController::class,'style']);
     });
 
 
@@ -55,6 +53,12 @@ Route::group(['middleware'=>['changeLang','throttle:apiLimit']],function (){
     Route::group(['prefix'=>'/categories'],function(){
         Route::get('/',[CategoriesController::class,'index']);
     });
+
+    Route::group(['prefix'=>'/orders','middleware'=>'CheckApiAuth'],function(){
+        Route::get('/',[OrdersController::class,'index']);
+        Route::post('/{template_id}',[OrdersController::class,'make']);
+    });
+
     Route::group(['prefix'=>'/template-sec-attr-value'],function(){
         Route::get('/',[TemplateSecAttrValueController::class,'all_template_sec_attr_data']);
         Route::post('search-attribute-values',[TemplateSecAttrValueController::class,'search_attribute_values']);
@@ -72,6 +76,13 @@ Route::group(['middleware'=>['changeLang','throttle:apiLimit']],function (){
         Route::get('/per-template',[SectionsController::class,'per_template']);
        // Route::get('/{name}',[SectionsController::class,'specific_section']);
     });
+
+    // ---------------------start of users actions --------------------
+    Route::group(['prefix'=>'/user','middleware'=>'CheckApiAuth'],function (){
+        Route::post('/update-personal-info',[UsersController::class,'update_personal_info']);
+
+    });
+    // ---------------------end of users actions --------------------
 
 
 
@@ -108,6 +119,10 @@ Route::group(['middleware'=>['changeLang','throttle:apiLimit']],function (){
 
     Route::group(['prefix'=>'/titledesc'],function(){
         Route::post('/',[TitleDescriptionController::class,'all']);
+    });
+
+    Route::group(['prefix'=>'/images'],function(){
+        Route::post('/cv_shapes',[ImagesController::class,'cv_shapes']);
     });
 
 

@@ -13,6 +13,7 @@ use App\Http\Resources\UserCvResource;
 use App\Http\Resources\UserCvSecAttrValResource;
 use App\Http\Resources\UserCvSectionResource;
 use App\Http\traits\messages;
+use App\Models\elements_style;
 use App\Models\users_cvs;
 use App\Models\users_cvs_sec_attr_value;
 use App\Models\users_cvs_sections;
@@ -45,11 +46,12 @@ class UsersCvsController extends Controller
         ]);
         $output = users_cvs::query()->orderBy('id','DESC')->with(['user','template'])->find($output->id);*/
         if(request()->hasFile('layout_image')){
-           // $img = $this->upload(request()->file('layout_image'),'layouts');
+            $img = $this->upload(request()->file('layout_image'),'layouts');
         }
 
-        $cvObj = new CvLayoutBuilder(request('id') ?? null , request()->all());
-        return $cvObj->save_template()->save_template_sec()->save_template_style();
+        $cvObj = new CvLayoutBuilder(request('id') ?? null , request()->all() , request('parent_id') ?? null);
+
+        return $cvObj->save_template($img ?? null)->save_template_sec()->save_template_style();
         return request()->all();
 
     }

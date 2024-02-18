@@ -20,6 +20,7 @@ class TemplateSectionResource extends JsonResource
           'template_id'=>$this->template_id,
           'template'=>TemplateResource::make($this->whenLoaded('template')),
           'section'=>SectionResource::make($this->whenLoaded('section')),
+          'attr_answers'=>TemplateSecAttrValueResource::collection($this->whenLoaded('attr_answers')),
           'content_width'=>$this->content_width,
           'created_at'=>$this->created_at,
         ];
