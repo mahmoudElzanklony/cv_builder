@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\usersFormRequest;
+use App\Http\Resources\UserResource;
 use App\Http\traits\messages;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -24,18 +25,25 @@ class UsersController extends Controller
 
     public function update_personal_info(usersFormRequest $usersFormRequest){
         $data = $usersFormRequest->validated();
-        if(request()->filled('password')) {
+        if(request()->filled('password') && request('password') != '') {
             $data['password'] = bcrypt(request('password'));
+        }else{
+            unset($data['password']);
         }
+
         if(request()->hasFile('image')){
             $image = $this->upload(request()->file('image'),'users');
             $data['image'] = $image;
         }
-        if(auth()->check()) {
+        if(auth()->check() && auth()->user()->role->name == 'user') {
             User::query()->where('id', auth()->id())->update($data);
             $output = User::query()->find(auth()->id());
         }else{
-            $output = User::query()->where('activation_code','=', request('activation_code'))->update($data);
+            User::query()->where('id', request('id'))->update($data);
+            $output = User::query()
+                ->withCount('owner_cvs')
+                ->withCount('fork_cvs')->with('country')->find(request('id'));
+            $output = UserResource::make($output);
         }
         return messages::success_output(trans('messages.updated_successfully'),$output);
     }

@@ -90,5 +90,15 @@ class User extends Authenticatable implements JWTSubject
         return $this->morphOne(images::class,'imageable');
     }
 
+    public function owner_cvs()
+    {
+        return $this->hasMany(templates::class,'user_id')->whereRaw('parent_id is null');
+    }
+
+    public function fork_cvs()
+    {
+        return $this->hasMany(templates::class,'user_id')->whereRaw('parent_id is not null');
+    }
+
 
 }

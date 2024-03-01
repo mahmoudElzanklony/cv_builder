@@ -9,7 +9,7 @@ class templates extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    protected $fillable = ['user_id','category_id','name','type','visibility','price'];
+    protected $fillable = ['user_id','category_id','name','type','visibility','price','parent_id'];
 
     public function category(){
         return $this->belongsTo(categories::class,'category_id');

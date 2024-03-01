@@ -55,7 +55,7 @@ Route::group(['middleware'=>['changeLang','throttle:apiLimit']],function (){
     });
 
     Route::group(['prefix'=>'/orders','middleware'=>'CheckApiAuth'],function(){
-        Route::get('/',[OrdersController::class,'index']);
+        Route::any('/',[OrdersController::class,'index']);
         Route::post('/{template_id}',[OrdersController::class,'make']);
     });
 
@@ -88,12 +88,14 @@ Route::group(['middleware'=>['changeLang','throttle:apiLimit']],function (){
 
     Route::group(['prefix'=>'/dashboard','middleware'=>'CheckApiAuth'],function(){
         Route::post('/users',[DashboardController::class,'users']);
+        Route::post('/users/save',[UsersController::class,'update_personal_info']);
         Route::get('/quick-statistics',[DashboardController::class,'quick_statistics']);
         Route::post('/templates/save',[DashboardController::class,'save_template']);
         Route::post('/templates-sections/save',[DashboardController::class,'save_template_sections']);
         Route::post('/sections/save',[DashboardController::class,'save_section']);
         Route::post('/attributes/save',[DashboardController::class,'save_attribute']);
         Route::post('/categories/save',[CategoriesController::class,'save']);
+        Route::post('/profit/save',[DashboardController::class,'save_profit']);
         Route::group(['prefix'=>'/languages'],function(){
             Route::get('/',[DashboardController::class,'all_languages']);
             Route::post('/save',[DashboardController::class,'save_lang']);
@@ -122,7 +124,7 @@ Route::group(['middleware'=>['changeLang','throttle:apiLimit']],function (){
     });
 
     Route::group(['prefix'=>'/images'],function(){
-        Route::post('/cv_shapes',[ImagesController::class,'cv_shapes']);
+        Route::get('/cv_shapes',[ImagesController::class,'cv_shapes']);
     });
 
 

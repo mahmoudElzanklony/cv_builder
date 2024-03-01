@@ -7,6 +7,7 @@ namespace App\Http\traits;
 use App\Http\Actions\ImageModalSave;
 use App\Http\Controllers\Filters\CategoryId;
 use App\Http\Controllers\Filters\NameFilter;
+use App\Http\Controllers\Filters\ParentId;
 use App\Http\Controllers\Filters\PriceFilter;
 use App\Http\Controllers\Filters\UserId;
 use App\Http\Requests\templateSectionsFormRequest;
@@ -37,7 +38,9 @@ trait TemplatesHelper
     }
     public function all_templates(){
         $templates =  $this->all_templates_info()
-            ->public()->parent()
+            ->when(!(request()->has('parent_id')),function ($e){
+                $e->whereRaw('(visibility = "public" and parent_id is null)');
+            })
             ->with('children.user.image')
             ->with('user.image')
             ->withCount('sections')
@@ -48,12 +51,15 @@ trait TemplatesHelper
                     NameFilter::class,
                     UserId::class,
                     CategoryId::class,
-                    PriceFilter::class
+                    PriceFilter::class,
+                    ParentId::class
                  ])
                 ->thenReturn()
                 ->paginate(10);
         return TemplateResource::collection($output);
     }
+
+
 
     public function all_info($id)
     {

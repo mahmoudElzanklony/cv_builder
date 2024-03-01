@@ -51,8 +51,8 @@ class UsersCvsController extends Controller
 
         $cvObj = new CvLayoutBuilder(request('id') ?? null , request()->all() , request('parent_id') ?? null);
 
-        return $cvObj->save_template($img ?? null)->save_template_sec()->save_template_style();
-        return request()->all();
+        $cvObj->save_template($img ?? null)->save_template_sec()->save_template_style();
+        return messages::success_output(trans('messages.saved_successfully'));
 
     }
 
