@@ -29,7 +29,7 @@ trait SectionsHelper
                 NameFilter::class
             ])
             ->thenReturn()
-            ->paginate(10);
+            ->paginate(25);
         return SectionResource::collection($output);
     }
 
