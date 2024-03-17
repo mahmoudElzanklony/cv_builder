@@ -17,6 +17,7 @@ class changeLang
      */
     public function handle(Request $request, Closure $next)
     {
+
         if(request()->hasHeader('lang')){
             app()->setLocale(request()->header('lang'));
         }else if(session()->has('lang')) {
@@ -27,7 +28,7 @@ class changeLang
             }
 
         }else{
-            app()->setLocale('ar');
+            app()->setLocale('en');
         }
        /* if(!(request()->hasHeader('api_key') && request()->header('api_key') == env('api_key','skillar2023'))){
             return messages::error_output('api key is missing !!');
