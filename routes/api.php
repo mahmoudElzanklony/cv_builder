@@ -26,6 +26,11 @@ Route::group(['middleware'=>['changeLang','throttle:apiLimit']],function (){
     Route::post('/logout',[AuthControllerApi::class,'logout_api']);
     Route::post('/validate-user',[AuthControllerApi::class,'validate_user']);
     Route::post('/login',[AuthControllerApi::class,'login_api']);
+    Route::post('/check-email',[AuthControllerApi::class,'check_email']);
+    Route::post('/user-by-activation-code',[AuthControllerApi::class,'user_by_activation_code']);
+    Route::post('/newpass',[UsersController::class,'update_personal_info']);
+
+
     Route::post('/percentages',[PercentageController::class,'index']);
     Route::get('/user',[AuthControllerApi::class,'user'])->middleware('CheckApiAuth');
 

@@ -9,6 +9,7 @@ use App\Http\traits\messages;
 use App\Models\roles;
 use App\Models\User;
 use App\Services\auth\register_service;
+use App\Services\mail\send_email;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -17,11 +18,19 @@ class AuthControllerApi extends AuthServicesClass
 {
     use messages;
     public function login_api(){
-
-        $data = Validator::make(request()->all(),[
-            'email'=>'required',
-            'password'=>'required',
-        ]);
+        if(request()->filled('serial_number')){
+            $user = User::query()->where('serial_number','=',request('serial_number'))->first();
+            $token = auth('api')->login($user);
+            $user = auth('api')->user();
+            $user['token'] =  $token;
+            $user['role'] = roles::query()->find($user->role_id);
+            return $user;
+        }else {
+            $data = Validator::make(request()->all(), [
+                'email' => 'required',
+                'password' => 'required',
+            ]);
+        }
         if(sizeof($data->errors()) == 0) {
 
             $credential = request()->only(['email', 'password']);
@@ -33,7 +42,7 @@ class AuthControllerApi extends AuthServicesClass
                 $user = auth('api')->user();
                 $user['token'] =  $token;
                 $user['role'] = roles::query()->find($user->role_id);
-                return $user;
+                //return $user;
                 return [
                     'user'=>$user,
                     'token'=>$token
@@ -42,6 +51,19 @@ class AuthControllerApi extends AuthServicesClass
         }else{
             return response()->json($data->errors(),401);
            // return messages::error_output($data->errors());
+        }
+    }
+
+
+    public function check_email()
+    {
+        $user = User::query()->where('email','=',request('email'))->first();
+        if($user == null){
+            return messages::errors(trans('errors.not_found_user'));
+        }else{
+            send_email::send(trans('keywords.reset_password_title'),trans('keywords.reset_password_message'),
+                'auth/new_password?id='.$user->id.'&serial_number='.$user->serial_number,'اضغط هنا',$user->email);
+            return messages::success_output(trans('messages.send_email_successfully'));
         }
     }
 
@@ -81,5 +103,18 @@ class AuthControllerApi extends AuthServicesClass
         //$user = User::query()->find()
         //$user['role'] = roles::query()->find($user->role_id);
         return JWTAuth::parseToken()->authenticate();
+    }
+
+    public function user_by_activation_code(){
+        if(request()->has('serial_number') && request()->has('id')){
+            $user = User::query()->where([
+                'serial_number'=>request('serial_number'),
+                'id'=>request('id'),
+            ])->first();
+            if($user != null){
+                return messages::success_output();
+            }
+            return messages::error_output();
+        }
     }
 }
