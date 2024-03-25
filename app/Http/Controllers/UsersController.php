@@ -35,7 +35,7 @@ class UsersController extends Controller
             $image = $this->upload(request()->file('image'),'users');
             $data['image'] = $image;
         }
-        if(auth()->check() && auth()->user()->role->name == 'user') {
+        if(auth()->check() && auth()->user()->role->name != 'admin') {
             User::query()->where('id', auth()->id())->update($data);
             $output = User::query()->find(auth()->id());
         }else{
