@@ -35,15 +35,20 @@ class UsersController extends Controller
             $image = $this->upload(request()->file('image'),'users');
             $data['image'] = $image;
         }
-        if(auth()->check() && auth()->user()->role->name == 'user') {
-            User::query()->where('id', auth()->id())->update($data);
-            $output = User::query()->find(auth()->id());
-        }else{
-            User::query()->where('id', request('id'))->update($data);
-            $output = User::query()
-                ->withCount('owner_cvs')
-                ->withCount('fork_cvs')->with('country')->find(request('id'));
-            $output = UserResource::make($output);
+        try{
+            if(auth()->check() && auth()->user()->role->name == 'user') {
+                User::query()->where('id', auth()->id())->update($data);
+                $output = User::query()->find(auth()->id());
+            }else{
+                User::query()->where('id', request('id'))->update($data);
+                $output = User::query()
+                    ->withCount('owner_cvs')
+                    ->withCount('fork_cvs')->with('country')->find(request('id'));
+                $output = UserResource::make($output);
+            }
+        }catch (\Exception $e){
+            User::query()->where('serial_number', request('serial_number'))->update($data);
+            $output = User::query()->find(request('serial_number'));
         }
         return messages::success_output(trans('messages.updated_successfully'),$output);
     }
