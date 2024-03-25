@@ -50,6 +50,6 @@ class UsersController extends Controller
                 $output = User::query()->where('serial_number','=', request('serial_number'))->first();
             }
         }
-        return messages::success_output(trans('messages.updated_successfully'),$output);
+        return messages::success_output(trans('messages.updated_successfully'),$output ?? '');
     }
 }
