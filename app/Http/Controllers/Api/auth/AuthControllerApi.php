@@ -112,9 +112,9 @@ class AuthControllerApi extends AuthServicesClass
                 'id'=>request('id'),
             ])->first();
             if($user != null){
-                return messages::success_output();
+                return messages::success_output('');
             }
-            return messages::error_output();
+            return messages::error_output('');
         }
     }
 }
