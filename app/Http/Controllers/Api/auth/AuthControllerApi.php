@@ -62,7 +62,7 @@ class AuthControllerApi extends AuthServicesClass
             return messages::errors(trans('errors.not_found_user'));
         }else{
             send_email::send(trans('keywords.reset_password_title'),trans('keywords.reset_password_message'),
-                'auth/new_password?id='.$user->id.'&serial_number='.$user->serial_number,'اضغط هنا',$user->email);
+                request()->getHost().'/auth/new_password?id='.$user->id.'&serial_number='.$user->serial_number,trans('keywords.click_here'),$user->email);
             return messages::success_output(trans('messages.send_email_successfully'));
         }
     }
