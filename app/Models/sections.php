@@ -13,7 +13,8 @@ class sections extends Model
     protected $fillable = ['user_id','name','info'];
 
     public function attributes(){
-        return $this->belongsToMany(attributes::class,sections_attributes::class,'section_id','attribute_id');
+        return $this->belongsToMany(attributes::class,sections_attributes::class,'section_id','attribute_id')
+            ->orderBy('sections_attributes.id','ASC');
     }
 
     public function image(){
