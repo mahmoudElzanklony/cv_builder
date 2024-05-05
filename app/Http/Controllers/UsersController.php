@@ -52,4 +52,5 @@ class UsersController extends Controller
         }
         return messages::success_output(trans('messages.updated_successfully'),$output ?? '');
     }
+
 }

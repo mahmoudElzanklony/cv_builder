@@ -117,4 +117,5 @@ class AuthControllerApi extends AuthServicesClass
             return messages::error_output('');
         }
     }
+
 }
