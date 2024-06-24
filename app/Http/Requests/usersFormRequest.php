@@ -109,6 +109,19 @@ class usersFormRequest extends FormRequest
         ];
     }
 
+    public function personal_info(){
+        return [
+            //
+            'id'=>'filled',
+            'username'=>'required|max:191',
+            'email'=>'required|email|max:191|unique:users,email,'.auth()->id(),
+            'password'=>'nullable|min:7|max:191',
+            'phone'=>'filled|min:7',
+            'address'=>'filled|max:191',
+            'image'=>'filled|image|mimes:jpg,jpeg,png,gif',
+        ];
+    }
+
     public function rules()
     {
         if(str_contains($this->getRequestUri(),'/login')){
@@ -123,6 +136,8 @@ class usersFormRequest extends FormRequest
             return $this->update_password();
         }else if(str_contains($this->getRequestUri() , '/newpass')){
             return $this->reset_psasword();
+        }else if(str_contains($this->getRequestUri() , '/update-personal')){
+            return $this->personal_info();
         }else if(str_contains($this->getRequestUri() , '/profile/update-personal-data')){
             return $this->update_personal_data();
         }else if(str_contains($this->getRequestUri() , '/profile/update-company-data')){

@@ -14,7 +14,7 @@ class FormRequestHandleInputs
         foreach($langs as $lang){
             foreach($inputs as $input){
                 $all[$lang->prefix.'_'.$input] = (app()->getLocale() == $lang->prefix ? 'required':'filled' ) ;
-                $all[$lang->prefix.'_'.$input] = (app()->getLocale() == $lang->prefix ? 'required':'filled' ) ;
+                //$all[$lang->prefix.'_'.$input] = (app()->getLocale() == $lang->prefix ? 'required':'filled' ) ;
             }
         }
         return $all;
@@ -39,7 +39,7 @@ class FormRequestHandleInputs
             foreach ($langs as $lang) {
                 if (Str::contains($name, $lang)) {
                     $input_name = Str::replace($lang,'',$name);
-                    $input_name = Str::replace('_','',$input_name);
+                    $input_name = substr($input_name, 1);
                     $output[$input_name][$lang] = $value;
                     $exist_inner_arr = 1;
                 }
@@ -48,8 +48,10 @@ class FormRequestHandleInputs
                 $output[$name] = $value;
             }
         }
+
         foreach ($decoded as $value){
-            $output[$value] = json_encode($output[$value],JSON_UNESCAPED_UNICODE);
+
+            $output[$value] = isset($output[$value]) ? json_encode($output[$value] ,JSON_UNESCAPED_UNICODE) : null;
         }
         return $output;
     }

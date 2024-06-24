@@ -34,7 +34,7 @@ class TitleDescriptionController extends Controller
                     DescFilter::class,
                 ])
                 ->thenReturn()
-                ->paginate(25);
+                ->paginate(15);
             if(request()->has('admin')){
                 return $data;
             }else {

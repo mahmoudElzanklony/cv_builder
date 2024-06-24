@@ -15,21 +15,23 @@ use App\Http\Controllers\AttributesController;
 use App\Http\Controllers\TemplateSecAttrValueController;
 use App\Http\Controllers\UsersCvsController;
 use App\Http\Controllers\TitleDescriptionController;
+use App\Http\Controllers\PercentageController;
+use App\Http\Controllers\ImagesController;
+use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\classes\general\GeneralServiceController;
 
-Route::get('/test',function (){
-   /*$user = \App\Models\User::query()->find(1);
-   $user->username = 'hamza';
-   $user->email = 'al22222i@yahoo.com';
-   return $user;*/
- //  return response()->json($user);
-});
 
-Route::group(['middleware'=>'changeLang'],function (){
+Route::group(['middleware'=>['changeLang','throttle:apiLimit']],function (){
     Route::post('/register',[AuthControllerApi::class,'register_post']);
     Route::post('/logout',[AuthControllerApi::class,'logout_api']);
     Route::post('/validate-user',[AuthControllerApi::class,'validate_user']);
     Route::post('/login',[AuthControllerApi::class,'login_api']);
+    Route::post('/check-email',[AuthControllerApi::class,'check_email']);
+    Route::post('/user-by-activation-code',[AuthControllerApi::class,'user_by_activation_code']);
+    Route::post('/newpass',[UsersController::class,'update_personal_info']);
+
+
+    Route::post('/percentages',[PercentageController::class,'index']);
     Route::get('/user',[AuthControllerApi::class,'user'])->middleware('CheckApiAuth');
 
 
@@ -42,7 +44,10 @@ Route::group(['middleware'=>'changeLang'],function (){
     });
 
     Route::group(['prefix'=>'/templates'],function(){
-        Route::get('/',[TemplatesController::class,'all_templates']);
+        Route::post('/',[TemplatesController::class,'all_templates']);
+        Route::post('/check-payment/{id}',[TemplatesController::class,'check_payment'])->middleware('CheckApiAuth');
+        Route::get('/all-info/{id}',[TemplatesController::class,'all_info']);
+        Route::get('/style/{id}',[TemplatesController::class,'style']);
     });
 
 
@@ -53,6 +58,12 @@ Route::group(['middleware'=>'changeLang'],function (){
     Route::group(['prefix'=>'/categories'],function(){
         Route::get('/',[CategoriesController::class,'index']);
     });
+
+    Route::group(['prefix'=>'/orders','middleware'=>'CheckApiAuth'],function(){
+        Route::any('/',[OrdersController::class,'index']);
+        Route::post('/{template_id}',[OrdersController::class,'make']);
+    });
+
     Route::group(['prefix'=>'/template-sec-attr-value'],function(){
         Route::get('/',[TemplateSecAttrValueController::class,'all_template_sec_attr_data']);
         Route::post('search-attribute-values',[TemplateSecAttrValueController::class,'search_attribute_values']);
@@ -71,16 +82,25 @@ Route::group(['middleware'=>'changeLang'],function (){
        // Route::get('/{name}',[SectionsController::class,'specific_section']);
     });
 
+    // ---------------------start of users actions --------------------
+    Route::group(['prefix'=>'/user','middleware'=>'CheckApiAuth'],function (){
+        Route::post('/update-personal-info',[UsersController::class,'update_personal_info']);
+
+    });
+    // ---------------------end of users actions --------------------
+
 
 
     Route::group(['prefix'=>'/dashboard','middleware'=>'CheckApiAuth'],function(){
         Route::post('/users',[DashboardController::class,'users']);
+        Route::post('/users/save',[UsersController::class,'update_personal_info']);
         Route::get('/quick-statistics',[DashboardController::class,'quick_statistics']);
         Route::post('/templates/save',[DashboardController::class,'save_template']);
         Route::post('/templates-sections/save',[DashboardController::class,'save_template_sections']);
         Route::post('/sections/save',[DashboardController::class,'save_section']);
         Route::post('/attributes/save',[DashboardController::class,'save_attribute']);
         Route::post('/categories/save',[CategoriesController::class,'save']);
+        Route::post('/profit/save',[DashboardController::class,'save_profit']);
         Route::group(['prefix'=>'/languages'],function(){
             Route::get('/',[DashboardController::class,'all_languages']);
             Route::post('/save',[DashboardController::class,'save_lang']);
@@ -106,6 +126,10 @@ Route::group(['middleware'=>'changeLang'],function (){
 
     Route::group(['prefix'=>'/titledesc'],function(){
         Route::post('/',[TitleDescriptionController::class,'all']);
+    });
+
+    Route::group(['prefix'=>'/images'],function(){
+        Route::get('/cv_shapes',[ImagesController::class,'cv_shapes']);
     });
 
 

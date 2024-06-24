@@ -28,7 +28,7 @@ class changeLang
             }
 
         }else{
-            app()->setLocale('ar');
+            app()->setLocale('en');
         }
        /* if(!(request()->hasHeader('api_key') && request()->header('api_key') == env('api_key','skillar2023'))){
             return messages::error_output('api key is missing !!');

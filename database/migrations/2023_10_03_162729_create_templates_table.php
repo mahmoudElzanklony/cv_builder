@@ -20,6 +20,7 @@ class CreateTemplatesTable extends Migration
             $table->string('name');
             $table->string('visibility')->default('public');
             $table->char('type'); // u ==> user , s ==> service
+            $table->integer('price');
             $table->softDeletes();
             $table->timestamps();
         });

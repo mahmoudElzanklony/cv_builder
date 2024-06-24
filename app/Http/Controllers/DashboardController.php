@@ -12,6 +12,7 @@ use App\Http\Resources\UserResource;
 use App\Http\traits\messages;
 use App\Models\attributes;
 use App\Models\countries;
+use App\Models\percentages;
 use App\Models\sections;
 use App\Models\templates;
 use App\Models\User;
@@ -29,7 +30,10 @@ class DashboardController extends Controller
     use TemplatesHelper , SectionsHelper , AttributesHelper , LanguagesHelper , TablesPrivilegesHelper , TemplateSecAttrValueHelper;
 
     public function users(){
-        $data = User::query()->with('country')->orderBy('id','DESC');
+        $data = User::query()
+            ->withCount('owner_cvs')
+            ->withCount('fork_cvs')
+            ->with('country')->orderBy('id','DESC');
         $output = app(Pipeline::class)
             ->send($data)
             ->through([
@@ -75,5 +79,13 @@ class DashboardController extends Controller
           'users_cv'=>users_cvs::query()->count(),
         ];
         return messages::success_output('',$output);
+    }
+
+    public function save_profit()
+    {
+        percentages::query()->where('name','=','profit')->update([
+            'percentage'=>request('profit')
+        ]);
+        return messages::success_output(trans('messages.saved_successfully'));
     }
 }

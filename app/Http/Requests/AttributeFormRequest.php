@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Services\FormRequestHandleInputs;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 
 class AttributeFormRequest extends FormRequest
 {
@@ -27,11 +28,15 @@ class AttributeFormRequest extends FormRequest
         $arr = [
             'id'=>'filled',
             'name'=>'required',
-            'before_answer'=>'nullable',
             'type'=>'required',
             'table'=>'filled',
         ];
-        $arr = FormRequestHandleInputs::handle($arr,['label','placeholder']);
+        $arr = FormRequestHandleInputs::handle($arr,['label','placeholder','before_answer']);
+        foreach($arr as $key => $val){
+            if(Str::contains($key,'before_answer')){
+                $arr[$key] = 'filled';
+            }
+        }
         return $arr;
 
     }

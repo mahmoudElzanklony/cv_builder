@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,6 +13,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable , SoftDeletes;
+
+    protected $appends = ['full_name'];
+
 
     /**
      * The attributes that are mass assignable.
@@ -34,9 +38,14 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-     public function getUsernameAttribute($val)
+    public function setSerialNumberAttribute()
+    {
+        $this->attributes['serial_number'] = Str::uuid();
+    }
+
+     public function getFullNameAttribute()
      {
-         return ucfirst($val).' ... 11';
+         return $this->username.' ... 11';
      }
 
     public function setUsernameAttribute($value)
@@ -81,12 +90,20 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsTo(countries::class,'country_id');
     }
 
-    public function listings(){
-        return $this->hasMany(listings_info::class,'user_id');
+
+    public function image()
+    {
+        return $this->morphOne(images::class,'imageable');
     }
 
-    public function user_info(){
-        return $this->hasOne(user_info::class,'user_id');
+    public function owner_cvs()
+    {
+        return $this->hasMany(templates::class,'user_id')->whereRaw('parent_id is null');
+    }
+
+    public function fork_cvs()
+    {
+        return $this->hasMany(templates::class,'user_id')->whereRaw('parent_id is not null');
     }
 
 

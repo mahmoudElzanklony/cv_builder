@@ -164,6 +164,7 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
 
 
+
         /*
          * Package Service Providers...
          */
@@ -182,7 +183,7 @@ return [
         Laravel\Socialite\SocialiteServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
-
+        App\Providers\macroServiceProvider::class,
 
     ],
 
