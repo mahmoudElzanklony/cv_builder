@@ -21,6 +21,6 @@ class SectionsController extends Controller
     }
 
     public function names(){
-
+        return SectionsHelper::names();
     }
 }
