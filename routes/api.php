@@ -79,7 +79,7 @@ Route::group(['middleware'=>['changeLang','throttle:apiLimit']],function (){
         Route::get('/names',[SectionsController::class,'names']);
         Route::post('save',[UsersCvsController::class,'save']);
         Route::get('/per-template',[SectionsController::class,'per_template']);
-        Route::post('/properties',[SectionsController::class,'properties']);
+        Route::get('/properties',[SectionsController::class,'properties']);
     });
 
     // ---------------------start of users actions --------------------
