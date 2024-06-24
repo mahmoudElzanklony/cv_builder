@@ -44,7 +44,7 @@ trait SectionsHelper
     }
 
     public static function names(){
-        $sections =  \App\Models\sections::query()->whereRaw('id != 1 & id != 3')->get();
+        $sections =  \App\Models\sections::query()->whereNotIn('id',[1,3])->get();
         return SectionResource::collection($sections);
     }
 
