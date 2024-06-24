@@ -23,4 +23,9 @@ class SectionsController extends Controller
     public function names(){
         return SectionsHelper::names();
     }
+
+    public function properties()
+    {
+        return SectionsHelper::specific_section(request('id'));
+    }
 }
