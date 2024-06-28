@@ -25,7 +25,7 @@ class SectionResource extends JsonResource
           'created_at'=>$this->created_at->format('Y h d,h:i A') ?? null,
         ];
         try{
-            $arr['en_name']=json_decode($this->name, true)['en'];
+            $arr['en_name']=json_decode($this->name, true);
         }catch (Exception $e){}
         try{
             $arr['profile_name']=json_decode($this->name, true)[app()->getLocale().'_profile'] ?? '';
