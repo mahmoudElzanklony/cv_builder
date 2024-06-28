@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use App\Services\FormRequestHandleInputs;
 use Illuminate\Http\Resources\Json\JsonResource;
+use TheSeer\Tokenizer\Exception;
 
 class SectionResource extends JsonResource
 {
@@ -15,15 +16,18 @@ class SectionResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
+        $arr =  [
           'id'=>$this->id,
           'name'=>FormRequestHandleInputs::handle_output_column($this->name),
           'en_name'=>json_decode($this->name, true)['en'],
-          'profile_name'=>json_decode($this->name, true)[app()->getLocale().'_profile'] ?? '',
           'info'=>FormRequestHandleInputs::handle_output_column($this->info),
           'image'=>ImageResource::make($this->whenLoaded('image')) ,
           'attributes'=>AttributeResource::collection($this->whenLoaded('attributes')),
           'created_at'=>$this->created_at->format('Y h d,h:i A') ?? null,
         ];
+        try{
+            $arr['profile_name']=json_decode($this->name, true)[app()->getLocale().'_profile'] ?? '';
+        }catch (Exception $e){}
+        return $arr;
     }
 }
