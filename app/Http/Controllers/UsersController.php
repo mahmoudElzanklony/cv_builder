@@ -25,7 +25,6 @@ class UsersController extends Controller
 
     public function update_personal_info(usersFormRequest $usersFormRequest){
         $data = $usersFormRequest->validated();
-        return $data;
         if(request()->filled('password') && request('password') != '') {
             $data['password'] = bcrypt(request('password'));
         }else{
@@ -39,6 +38,7 @@ class UsersController extends Controller
         if(auth()->check() && auth()->user()->role->name != 'admin') {
             User::query()->where('id', auth()->id())->update($data);
             $output = User::query()->find(auth()->id());
+            return $output;
         }else{
             if(request()->filled('id')){
                 User::query()->where('id', request('id'))->update($data);
