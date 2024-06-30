@@ -25,6 +25,7 @@ class UsersController extends Controller
 
     public function update_personal_info(usersFormRequest $usersFormRequest){
         $data = $usersFormRequest->validated();
+        return $data;
         if(request()->filled('password') && request('password') != '') {
             $data['password'] = bcrypt(request('password'));
         }else{
