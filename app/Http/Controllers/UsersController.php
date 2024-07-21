@@ -48,6 +48,9 @@ class UsersController extends Controller
             }else if(request()->filled('serial_number')){
                 User::query()->where('serial_number', request('serial_number'))->update($data);
                 $output = User::query()->where('serial_number','=', request('serial_number'))->first();
+            }else{
+                User::query()->where('id', auth()->id())->update($data);
+                $output = User::query()->find(auth()->id());
             }
         }
         return messages::success_output(trans('messages.updated_successfully'),$output ?? '');

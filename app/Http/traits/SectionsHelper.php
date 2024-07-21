@@ -44,7 +44,8 @@ trait SectionsHelper
     }
 
     public static function names(){
-        $sections = SectionsWithAllData::get_data();
+        $sections =  \App\Models\sections::query()->whereNotIn('id',[1,3])->get();
+        return SectionResource::collection($sections);
     }
 
     public static function per_template($template_id){

@@ -119,6 +119,7 @@ class usersFormRequest extends FormRequest
             'phone'=>'filled|min:7',
             'bio'=>'filled',
             'address'=>'filled|max:191',
+            'bio'=>'filled|max:191',
             'image'=>'filled|image|mimes:jpg,jpeg,png,gif',
         ];
     }
