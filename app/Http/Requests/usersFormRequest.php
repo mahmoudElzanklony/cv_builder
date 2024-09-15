@@ -117,7 +117,7 @@ class usersFormRequest extends FormRequest
             'email'=>'required|email|max:191|unique:users,email,'.auth()->id(),
             'password'=>'nullable|min:7|max:191',
             'phone'=>'filled|min:7',
-            'address'=>'filled|max:191',
+            'address'=>'nullable|max:191',
             'bio'=>'filled',
             'image'=>'filled|image|mimes:jpg,jpeg,png,gif',
         ];

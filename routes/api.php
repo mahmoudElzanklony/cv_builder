@@ -18,7 +18,9 @@ use App\Http\Controllers\TitleDescriptionController;
 use App\Http\Controllers\PercentageController;
 use App\Http\Controllers\ImagesController;
 use App\Http\Controllers\OrdersController;
+use App\Http\Controllers\ColleaguesController;
 use App\Http\Controllers\classes\general\GeneralServiceController;
+
 
 
 Route::group(['middleware'=>['changeLang','throttle:apiLimit']],function (){
@@ -87,6 +89,7 @@ Route::group(['middleware'=>['changeLang','throttle:apiLimit']],function (){
         Route::post('/update-personal-info',[UsersController::class,'update_personal_info']);
 
     });
+   
     // ---------------------end of users actions --------------------
 
 
